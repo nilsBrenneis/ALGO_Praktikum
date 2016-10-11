@@ -1,4 +1,4 @@
-package brn.termin1.aufgabe1;
+package nbcn.termin1.aufgabe1;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

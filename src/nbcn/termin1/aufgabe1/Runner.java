@@ -1,4 +1,4 @@
-package brn.termin1.aufgabe1;
+package nbcn.termin1.aufgabe1;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class Runner {
 		friendsToInv.add(new Friend(4, "Musterfrau", "Erika"));
 		
 		
-		friendsToInv.get(0).addFriends(1);
+		friendsToInv.get(0).addFriends(4);
 		friendsToInv.get(0).addFriends(3);
 		
 		friendsToInv.get(1).addFriends(0);
