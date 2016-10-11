@@ -1,8 +1,8 @@
 package nbcn.termin1.aufgabe1;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+
+// nilsi brilsi
 
 public class Friend {
 
