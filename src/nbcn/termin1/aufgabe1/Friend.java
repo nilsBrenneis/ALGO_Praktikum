@@ -2,8 +2,6 @@ package nbcn.termin1.aufgabe1;
 
 import java.util.ArrayList;
 
-// nilsi brilsi
-
 public class Friend {
 
 	private int id;
