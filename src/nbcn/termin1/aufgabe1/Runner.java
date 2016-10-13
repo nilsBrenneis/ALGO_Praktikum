@@ -15,20 +15,20 @@ public class Runner {
 		friendsToInv.add(new Friend(3, "Mustermann", "Max"));
 		friendsToInv.add(new Friend(4, "Musterfrau", "Erika"));
 
-		friendsToInv.get(0).addFriends(1);
+		friendsToInv.get(0).addFriends(3);
 		friendsToInv.get(0).addFriends(2);
 
-		friendsToInv.get(1).addFriends(0);
-		friendsToInv.get(1).addFriends(2);
+		friendsToInv.get(1).addFriends(3);
+		friendsToInv.get(1).addFriends(5);
 
 		friendsToInv.get(2).addFriends(0);
-		friendsToInv.get(2).addFriends(1);
+		friendsToInv.get(2).addFriends(4);
 
 		friendsToInv.get(3).addFriends(0);
 		friendsToInv.get(3).addFriends(4);
 
-		friendsToInv.get(4).addFriends(3);
-		friendsToInv.get(4).addFriends(5);
+		friendsToInv.get(4).addFriends(0);
+		friendsToInv.get(4).addFriends(2);
 	}
 
 	private void siftList() {
@@ -41,7 +41,7 @@ public class Runner {
 				}
 			}
 			if (friendsInList < K_FREUNDE) {
-				friendsToInv.remove(friend);
+				iterator.remove();
 				siftList();
 			}
 		}
@@ -59,10 +59,9 @@ public class Runner {
 	public static void main(String[] args) {
 		Runner run = new Runner();
 		run.fillFriendsList();
-		run.siftList();
+		run.siftList();		
 		for (Friend friend : friendsToInv) {
 			System.out.print(friend.getId() + " " + friend.getSurname() + ", ");
 		}
-		
 	}
 }
