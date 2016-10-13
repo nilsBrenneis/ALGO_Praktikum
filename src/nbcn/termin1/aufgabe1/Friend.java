@@ -9,10 +9,10 @@ public class Friend {
 	private String surname;
 	private ArrayList<Integer> friendsArrLi;
 
-	Friend(int id, String name, String surname) {
+	Friend(int id, String surname, String name) {
 		this.id = id;
-		this.name = name;
 		this.surname = surname;
+		this.name = name;
 		friendsArrLi = new ArrayList<Integer>();
 	}
 	
