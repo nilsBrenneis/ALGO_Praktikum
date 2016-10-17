@@ -30,6 +30,7 @@ public class Runner {
 			if (friendsInList < K_FREUNDE) {
 				iterator.remove();
 				siftList();
+				break;
 			}
 		}
 	}
