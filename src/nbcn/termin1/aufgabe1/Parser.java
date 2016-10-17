@@ -1,7 +1,6 @@
 package nbcn.termin1.aufgabe1;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class Parser {
 	public static ArrayList<Friend> readFile() throws IOException {
 		ArrayList<Friend> friends = new ArrayList<Friend>();
 
-		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe1/invList.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe1/invList2.txt"))) {
 			String line = br.readLine();
 
 			while (line != null) {
