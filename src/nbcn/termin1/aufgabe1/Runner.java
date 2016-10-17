@@ -46,7 +46,7 @@ public class Runner {
 	public static void main(String[] args) {
 		Runner run = new Runner();
 		run.fillFriendsList();
-		run.siftList();		
+		run.siftList();
 		for (Friend friend : friendsToInv) {
 			System.out.print(friend.getId() + " " + friend.getSurname() + ", ");
 		}

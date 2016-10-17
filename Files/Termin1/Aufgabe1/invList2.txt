@@ -1,0 +1,6 @@
+0;Peter;Peters;5;3
+1;Michael;Mustermann;0;8
+2;Markus;Meyer;0;1
+3;Max;Mustermann;0;4
+4;Erika;Musterfrau;0;3
+5;Herbert;Herrmann;0;4
