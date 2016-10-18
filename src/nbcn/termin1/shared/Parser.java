@@ -1,4 +1,4 @@
-package nbcn.termin1.aufgabe1;
+package nbcn.termin1.shared;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

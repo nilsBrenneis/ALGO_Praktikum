@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import nbcn.termin1.shared.Parser;
+import nbcn.termin1.shared.Person;
+
 public class Runner {
 
 	private static final int K_FREUNDE = 2;
