@@ -9,14 +9,14 @@ public class Parser {
 
 	private static final String CSV_SPLIT = ";";
 
-	public static ArrayList<Friend> readFile() throws IOException {
-		ArrayList<Friend> friends = new ArrayList<Friend>();
+	public static ArrayList<Person> readFile() throws IOException {
+		ArrayList<Person> friends = new ArrayList<Person>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe1/invList2.txt"))) {
 			String line = br.readLine();
 
 			while (line != null) {
-				Friend toAdd = convertFriend(line.split(CSV_SPLIT));
+				Person toAdd = convertDatasetToPerson(line.split(CSV_SPLIT));
 				friends.add(toAdd);
 				line = br.readLine();
 			}
@@ -24,15 +24,15 @@ public class Parser {
 		return friends;
 	}
 
-	private static Friend convertFriend(String[] friendDataSet) {
-		int id = Integer.parseInt(friendDataSet[0]);
-		String surname = friendDataSet[1];
-		String name = friendDataSet[2];
-		Friend friend = new Friend(id, surname, name);
+	private static Person convertDatasetToPerson(String[] personDataSet) {
+		int id = Integer.parseInt(personDataSet[0]);
+		String surname = personDataSet[1];
+		String name = personDataSet[2];
+		Person friend = new Person(id, surname, name);
 
-		for (int i = 3; i < friendDataSet.length; i++) {
-			int knowsId = Integer.parseInt(friendDataSet[i]);
-			friend.addFriends(knowsId);
+		for (int i = 3; i < personDataSet.length; i++) {
+			int knowsId = Integer.parseInt(personDataSet[i]);
+			friend.addPersonKnows(knowsId);
 		}
 		return friend;
 	}

@@ -7,7 +7,7 @@ import java.util.Iterator;
 public class Runner {
 
 	private static final int K_FREUNDE = 2;
-	private static ArrayList<Friend> friendsToInv = new ArrayList<Friend>();
+	private static ArrayList<Person> friendsToInv = new ArrayList<Person>();
 
 	private void fillFriendsList() {
 		try {
@@ -18,10 +18,10 @@ public class Runner {
 	}
 
 	private void siftList() {
-		for (Iterator<Friend> iterator = friendsToInv.iterator(); iterator.hasNext();) {
+		for (Iterator<Person> iterator = friendsToInv.iterator(); iterator.hasNext();) {
 			int friendsInList = 0;
-			Friend friend = iterator.next();
-			for (int friend_id : friend.getFriends()) {
+			Person friend = iterator.next();
+			for (int friend_id : friend.getPersonKnows()) {
 				if (containsId(friend_id)) {
 					friendsInList++;
 				}
@@ -35,7 +35,7 @@ public class Runner {
 	}
 
 	private boolean containsId(int id) {
-		for (Friend friend : friendsToInv) {
+		for (Person friend : friendsToInv) {
 			if (friend.getId() == id) {
 				return true;
 			}
@@ -44,7 +44,7 @@ public class Runner {
 	}
 	
 	private static void printFriendList() {
-		for (Friend friend : friendsToInv) {
+		for (Person friend : friendsToInv) {
 			System.out.print(friend.getId() + " " + friend.getSurname() + ", ");
 		}
 	}
