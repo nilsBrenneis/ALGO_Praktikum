@@ -10,9 +10,8 @@ public class Runner {
 	private static ArrayList<Friend> friendsToInv = new ArrayList<Friend>();
 
 	private void fillFriendsList() {
-		Parser parser = new Parser();
 		try {
-			friendsToInv = parser.readFile();
+			friendsToInv = Parser.readFile();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
