@@ -42,13 +42,17 @@ public class Runner {
 		}
 		return false;
 	}
+	
+	private static void printFriendList() {
+		for (Friend friend : friendsToInv) {
+			System.out.print(friend.getId() + " " + friend.getSurname() + ", ");
+		}
+	}
 
 	public static void main(String[] args) {
 		Runner run = new Runner();
 		run.fillFriendsList();
 		run.siftList();
-		for (Friend friend : friendsToInv) {
-			System.out.print(friend.getId() + " " + friend.getSurname() + ", ");
-		}
+		printFriendList();
 	}
 }
