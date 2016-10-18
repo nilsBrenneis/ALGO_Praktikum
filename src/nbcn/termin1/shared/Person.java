@@ -33,6 +33,10 @@ public class Person {
 		}
 	}
 	
+	public ArrayList<Integer> getPersonKnowsList() {
+		return personArrLi;
+	}
+	
 	public int getKnowsCount() {
 		return personArrLi.size();
 	}	
