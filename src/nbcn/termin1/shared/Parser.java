@@ -12,7 +12,10 @@ public class Parser {
 	public static ArrayList<Person> readFile() throws IOException {
 		ArrayList<Person> friends = new ArrayList<Person>();
 
-		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe1/invList2.txt"))) {
+//		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe1/invList.txt"))) {
+//		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe1/invList2.txt"))) {
+//		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe2/persList1.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe2/persList2.txt"))) {
 			String line = br.readLine();
 
 			while (line != null) {
