@@ -2,8 +2,6 @@ package nbcn.termin1.aufgabe2;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import nbcn.termin1.shared.Parser;
 import nbcn.termin1.shared.Person;
 
