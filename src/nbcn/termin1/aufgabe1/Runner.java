@@ -14,7 +14,7 @@ public class Runner {
 
 	private void fillFriendsList() {
 		try {
-			friendsToInv = Parser.readFile();
+			friendsToInv = Parser.readFile("./Files/Termin1/Aufgabe1/invList2.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

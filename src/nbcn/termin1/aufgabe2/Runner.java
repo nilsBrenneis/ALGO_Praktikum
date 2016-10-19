@@ -13,7 +13,7 @@ public class Runner {
 	
 	private void fillPersList() {
 		try {
-			persToCheck = Parser.readFile();
+			persToCheck = Parser.readFile("./Files/Termin1/Aufgabe2/persList1.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

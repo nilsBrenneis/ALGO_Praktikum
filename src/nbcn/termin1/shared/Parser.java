@@ -9,13 +9,14 @@ public class Parser {
 
 	private static final String CSV_SPLIT = ";";
 
-	public static ArrayList<Person> readFile() throws IOException {
+	public static ArrayList<Person> readFile(String path) throws IOException {
 		ArrayList<Person> friends = new ArrayList<Person>();
 
 //		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe1/invList.txt"))) {
 //		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe1/invList2.txt"))) {
 //		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe2/persList1.txt"))) {
-		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe2/persList2.txt"))) {
+//		try (BufferedReader br = new BufferedReader(new FileReader("./Files/Termin1/Aufgabe2/persList2.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 			String line = br.readLine();
 
 			while (line != null) {
