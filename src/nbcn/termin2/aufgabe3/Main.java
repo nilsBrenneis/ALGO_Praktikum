@@ -12,7 +12,7 @@ import javax.swing.JFileChooser;
 
 public class Main {
 
-	private static Set<Long> s = new HashSet<>();
+	private static Set<Long> testData = new HashSet<>();
 
 	
 	public static void main(String[] args) {
@@ -28,12 +28,12 @@ public class Main {
 	public static void createTestData(){
 		Random r = new Random();
 		
-		while (s.size() < 500000) {
+		while (testData.size() < 500000) {
 			long val = r.nextLong();
-			s.add(val);
+			testData.add(val);
 		}
 				
-		System.out.println("Generierte Testdaten: " + s.size() + " St.");
+		System.out.println("Generierte Testdaten: " + testData.size() + " St.");
 	}
 	
 	
@@ -42,7 +42,7 @@ public class Main {
 		RedBlackTree tree = new RedBlackTree();
 
 		long start = System.currentTimeMillis();
-		for (long l : s){
+		for (long l : testData){
 			tree.insert(l);
 		}
 		long stop = System.currentTimeMillis();
@@ -62,9 +62,9 @@ public class Main {
            output = new BufferedWriter(new FileWriter(file));
          
            int cnt = 1;
-           for (long l : s){
+           for (long l : testData){
         	   	tree.insert(l);
-        	   	String data = cnt + "," + tree.cnt + System.lineSeparator();
+        	   	String data = cnt + ";" + tree.cnt + System.lineSeparator();
         	   	tree.cnt = 0;
         	   	if (cnt == 1 ||  ((cnt%2500)==0))
         	   		output.write(data);
