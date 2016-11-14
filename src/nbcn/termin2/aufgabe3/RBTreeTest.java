@@ -116,11 +116,11 @@ public class RBTreeTest {
 		assertTrue(tree.isRed(tree.getRightChild(tree.getRightChild(tree.getRightChild(tree.root)))));
 		
 		
-		assertEquals(2, tree.getBlack(tree.getLeftChild(tree.getLeftChild(tree.root))));
-		assertEquals(2, tree.getBlack(tree.getLeftChild(tree.getRightChild(tree.root))));
-		assertEquals(2, tree.getBlack(tree.getRightChild(tree.getLeftChild(tree.root))));
-		assertEquals(2, tree.getBlack(tree.getRightChild(tree.getRightChild(tree.root))));
-		assertEquals(2, tree.getBlack(tree.getRightChild(tree.getRightChild(tree.getRightChild(tree.root)))));
+		assertEquals(2, tree.getDepthBlack(tree.getLeftChild(tree.getLeftChild(tree.root))));
+		assertEquals(2, tree.getDepthBlack(tree.getLeftChild(tree.getRightChild(tree.root))));
+		assertEquals(2, tree.getDepthBlack(tree.getRightChild(tree.getLeftChild(tree.root))));
+		assertEquals(2, tree.getDepthBlack(tree.getRightChild(tree.getRightChild(tree.root))));
+		assertEquals(2, tree.getDepthBlack(tree.getRightChild(tree.getRightChild(tree.getRightChild(tree.root)))));
 		
 				
 		tree.delete(11);
@@ -133,9 +133,9 @@ public class RBTreeTest {
 		assertTrue(tree.isBlack(tree.getRightChild(tree.getRightChild(tree.getRightChild(tree.root)))));		
 		
 		
-		assertEquals(2, tree.getBlack(tree.getLeftChild(tree.getLeftChild(tree.root))));
-		assertEquals(2, tree.getBlack(tree.getLeftChild(tree.getRightChild(tree.root))));
-		assertEquals(2, tree.getBlack(tree.getRightChild(tree.getLeftChild(tree.root))));
-		assertEquals(2, tree.getBlack(tree.getRightChild(tree.getRightChild(tree.root))));
+		assertEquals(2, tree.getDepthBlack(tree.getLeftChild(tree.getLeftChild(tree.root))));
+		assertEquals(2, tree.getDepthBlack(tree.getLeftChild(tree.getRightChild(tree.root))));
+		assertEquals(2, tree.getDepthBlack(tree.getRightChild(tree.getLeftChild(tree.root))));
+		assertEquals(2, tree.getDepthBlack(tree.getRightChild(tree.getRightChild(tree.root))));
 	}
 }

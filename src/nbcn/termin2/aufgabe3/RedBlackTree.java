@@ -272,7 +272,7 @@ public class RedBlackTree {
 		return node;
 	}
 	
-	public int getBlack(TreeNode node) {
+	public int getDepthBlack(TreeNode node) {
 		int cnt = 0;
 		do {
 			if (node.color == BLACK) {
