@@ -3,8 +3,6 @@ package nbcn.termin2.aufgabe3;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import nbcn.termin2.aufgabe3.RedBlackTree.TreeNode;
-
 
 public class RBTreeTest {
 
