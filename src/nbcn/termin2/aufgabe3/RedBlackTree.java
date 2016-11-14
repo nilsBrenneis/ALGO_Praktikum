@@ -272,10 +272,17 @@ public class RedBlackTree {
 		return node;
 	}
 	
-
+	public int getHeight(TreeNode node) {
+		int cnt = 0;
+		do {
+			node = node.parent;
+			cnt++;
+		} while (node.parent != null);
+		return cnt;
+	}
 	
 	
-	private class TreeNode{
+	public class TreeNode{
 		public long key;
 		public TreeNode leftChild;
 		public TreeNode rightChild;
