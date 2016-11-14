@@ -272,11 +272,13 @@ public class RedBlackTree {
 		return node;
 	}
 	
-	public int getHeight(TreeNode node) {
+	public int getBlack(TreeNode node) {
 		int cnt = 0;
 		do {
+			if (node.color == BLACK) {
+				cnt++;
+			}
 			node = node.parent;
-			cnt++;
 		} while (node.parent != null);
 		return cnt;
 	}
