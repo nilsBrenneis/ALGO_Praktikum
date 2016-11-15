@@ -10,6 +10,9 @@ import java.util.Set;
 
 import javax.swing.JFileChooser;
 
+import nbcn.termin2.shared.RedBlackTree;
+import nbcn.termin2.shared.RedBlackTreeOC;
+
 public class Main {
 
 	private static Set<Long> testData = new HashSet<>();

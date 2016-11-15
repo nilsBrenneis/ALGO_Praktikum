@@ -1,9 +1,15 @@
-package nbcn.termin2.aufgabe3;
+package nbcn.termin2.shared;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+
+import nbcn.termin2.treeBuilder.Main;
 
 public class RedBlackTree {
 	private static final boolean RED = true;
 	private static final boolean BLACK = false;
+	private static final int VIS_V_DISTANCE = 25;
+	private static final int VIS_H_DISTANCE = 75;
 	
 	public TreeNode sentinel;
 	public TreeNode root;
@@ -281,6 +287,52 @@ public class RedBlackTree {
 			node = node.parent;
 		} while (node.parent != null);
 		return cnt;
+	}
+	
+	public void drawTree(Graphics2D g2d){
+		g2d.setColor(Color.BLACK);
+		int xCoord = Main.getWindowWidth()/2;
+		
+		g2d.fillRect(xCoord-25, 10, 50, 20);
+		g2d.drawLine(xCoord, 30,xCoord, 100);
+
+		g2d.setColor(Color.WHITE);
+		g2d.drawString("T.Nil", xCoord-15, 25);
+	
+		drawNode(root, xCoord, 100, g2d);
+	}
+	
+	
+	
+	private void drawNode(TreeNode node, int verticalBaseline, int level, Graphics2D g2d){
+		if (node == sentinel){
+			return;
+		} 
+		
+		int leftOffset = 25 * (int)size(node.leftChild);
+		int rightOffset = 25 * (int)size(node.rightChild);
+		
+		
+		if (node.leftChild != sentinel){
+			g2d.setColor(Color.BLACK);
+			int childXCoord = verticalBaseline - VIS_V_DISTANCE - rightOffset;
+			int childYCoord = level + VIS_H_DISTANCE;
+			g2d.drawLine(verticalBaseline, level, childXCoord, childYCoord);
+			drawNode(node.leftChild, childXCoord, childYCoord, g2d);
+		}
+		
+		if (node.rightChild != sentinel){
+			g2d.setColor(Color.BLACK);
+			int childXCoord = verticalBaseline + VIS_V_DISTANCE + leftOffset;
+			int childYCoord = level + VIS_H_DISTANCE;
+			g2d.drawLine(verticalBaseline, level, childXCoord, childYCoord);
+			drawNode(node.rightChild, childXCoord, childYCoord, g2d);
+		}
+		
+		g2d.setColor((node.color == RED) ? (Color.RED) : (Color.BLACK));
+		g2d.fillOval(verticalBaseline-25, level-25, 50, 50);
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(""+node.key, verticalBaseline-10, level);
 	}
 	
 	

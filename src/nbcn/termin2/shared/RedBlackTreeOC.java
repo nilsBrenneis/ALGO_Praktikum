@@ -1,4 +1,4 @@
-package nbcn.termin2.aufgabe3;
+package nbcn.termin2.shared;
 
 
 public class RedBlackTreeOC {
