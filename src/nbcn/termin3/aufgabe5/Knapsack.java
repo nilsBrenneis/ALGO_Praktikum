@@ -11,7 +11,7 @@ public class Knapsack {
 				if (i == 0 || k == 0)
 					v[i][k] = 0;
 				else if (weight[i - 1] <= k)
-					v[i][k] = maxInt(value[i - 1] + v[i - 1][k - weight[i - 1]], v[i - 1][k]);
+					v[i][k] = maxInt(v[i - 1][k], value[i - 1] + v[i - 1][k - weight[i - 1]]);
 				else
 					v[i][k] = v[i - 1][k];
 			}
