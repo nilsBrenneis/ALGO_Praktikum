@@ -4,19 +4,19 @@ public class Knapsack {
 
 	static int dynamicKnapsack(int knapsackCapacity, int weight[], int value[]) {
 		int valArrLength = value.length;
-		int K[][] = new int[valArrLength + 1][knapsackCapacity + 1];
+		int v[][] = new int[valArrLength + 1][knapsackCapacity + 1];
 
 		for (int i = 0; i <= valArrLength; i++) {
-			for (int j = 0; j <= knapsackCapacity; j++) {
-				if (i == 0 || j == 0)
-					K[i][j] = 0;
-				else if (weight[i - 1] <= j)
-					K[i][j] = maxInt(value[i - 1] + K[i - 1][j - weight[i - 1]], K[i - 1][j]);
+			for (int k = 0; k <= knapsackCapacity; k++) {
+				if (i == 0 || k == 0)
+					v[i][k] = 0;
+				else if (weight[i - 1] <= k)
+					v[i][k] = maxInt(value[i - 1] + v[i - 1][k - weight[i - 1]], v[i - 1][k]);
 				else
-					K[i][j] = K[i - 1][j];
+					v[i][k] = v[i - 1][k];
 			}
 		}
-		return K[valArrLength][knapsackCapacity];
+		return v[valArrLength][knapsackCapacity];
 	}
 
 	static int maxInt(int a, int b) {
@@ -24,9 +24,9 @@ public class Knapsack {
 	}
 
 	public static void main(String args[]) {
-		int weight[] = new int[] { 2, 2, 6, 5, 4 };
-		int value[] = new int[] { 2, 3, 5, 4, 6 };
-		int knapsackCapacity = 10;
+		int weight[] = new int[] {3, 2, 4, 1};
+		int value[] = new int[] { 100, 20, 60, 40};
+		int knapsackCapacity = 5;
 		System.out.println(dynamicKnapsack(knapsackCapacity, weight, value));
 	}
 }
