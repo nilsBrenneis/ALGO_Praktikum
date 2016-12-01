@@ -1,2 +1,3 @@
 # ALGO_Praktikum
-Praktikum TH-Köln Algorithmik I
+TH-Köln Algorithmik-Praktikum
+WS16/17
