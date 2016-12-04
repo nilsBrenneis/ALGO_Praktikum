@@ -44,9 +44,32 @@ public class NadelWunsch {
 		}
 	}
 
+	private static void drawPath(int i, int j) {
+		cluster[i][j]++;
+
+		if (!(i == 0 && j == 0)) {
+			int left = cluster[i - 1][j];
+			int diagonal = cluster[i - 1][j - 1];
+			int above = cluster[i][j - 1];
+
+			int nextElement = Math.max(Math.max(left, diagonal), above);
+
+			if (nextElement == left) {
+				drawPath(i - 1, j);
+			} else if (nextElement == diagonal) {
+				drawPath(i - 1, j - 1);
+			} else if (nextElement == above) {
+				drawPath(i, j - 1);
+			}
+		}
+	}
+
 	public static void main(String[] args) {
 		initialisiere();
 		compare();
+		printTable(cluster);
+		drawPath(sequenz1.length(), sequenz2.length());
+		System.out.println("_________________________");
 		printTable(cluster);
 	}
 }
