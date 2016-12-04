@@ -32,7 +32,7 @@ public class NadelWunsch{
 	      for (int i=1; i<=sequenz1.length(); i++)
 	         for (int j=1; j<=sequenz2.length(); j++)
 	            cluster[i][j] = Math.max(cluster[i-1][j-1] + equal(sequenz1.charAt(i-1),sequenz2.charAt(j-1))
-	            						,Math.max(cluster[i-1][j], cluster[i][j-1])
+	            						,Math.max(cluster[i-1][j] - 1, cluster[i][j-1] - 1)
 	            						);
 	      printTable(cluster);
 	      return cluster[sequenz1.length()][sequenz2.length()];                                           
@@ -49,8 +49,8 @@ public class NadelWunsch{
 	   
 	   public static void main(String[] args){
 	      
-		  String seq1 = "AGTA";
-	      String seq2 = "ATA";
+		  String seq1 = "ATA";
+	      String seq2 = "AGTA";
 	      
 	      NadelWunsch NW = new NadelWunsch(seq1, seq2);         
 	      System.out.println("Ergebnis: "+NW.compare());
