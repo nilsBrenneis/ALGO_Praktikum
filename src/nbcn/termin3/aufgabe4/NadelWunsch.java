@@ -7,8 +7,8 @@ public class NadelWunsch {
 	private static String[][] pathCluster;
 
 	public static void initialisiere() {
-		sequenz1 = "ATA";
-		sequenz2 = "AGTA";
+		sequenz1 = "ACCGGTCGAGTGCGCGGAAGCCGGCCGA";
+		sequenz2 = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
 		cluster = new int[sequenz1.length() + 1][sequenz2.length() + 1];
 
 		cluster[0][0] = 0;
@@ -48,7 +48,7 @@ public class NadelWunsch {
 	private static void drawPath(int i, int j) {
 		pathCluster[i][j] = "_" + pathCluster[i][j] + "_";
 
-		if (!(i == 0 && j == 0)) {
+		if (!(i == 0 || j == 0)) {
 			int left = cluster[i - 1][j];
 			int diagonal = cluster[i - 1][j - 1];
 			int above = cluster[i][j - 1];
