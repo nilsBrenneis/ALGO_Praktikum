@@ -4,6 +4,7 @@ public class NadelWunsch {
 	private static int[][] cluster;
 	private static String sequenz1;
 	private static String sequenz2;
+	private static String[][] pathCluster;
 
 	public static void initialisiere() {
 		sequenz1 = "ATA";
@@ -35,7 +36,7 @@ public class NadelWunsch {
 		}
 	}
 
-	private static void printTable(int[][] table) {
+	private static void printTable(String[][] table) {
 		for (int i = 0; i <= sequenz1.length(); i++) {
 			for (int j = 0; j <= sequenz2.length(); j++) {
 				System.out.print("[" + table[i][j] + "]" + " ");
@@ -45,7 +46,7 @@ public class NadelWunsch {
 	}
 
 	private static void drawPath(int i, int j) {
-		cluster[i][j]++;
+		pathCluster[i][j] = "_" + pathCluster[i][j] + "_";
 
 		if (!(i == 0 && j == 0)) {
 			int left = cluster[i - 1][j];
@@ -54,12 +55,21 @@ public class NadelWunsch {
 
 			int nextElement = Math.max(Math.max(left, diagonal), above);
 
-			if (nextElement == left) {
-				drawPath(i - 1, j);
-			} else if (nextElement == diagonal) {
+			if (nextElement == diagonal) {
 				drawPath(i - 1, j - 1);
+			} else if (nextElement == left) {
+				drawPath(i - 1, j);
 			} else if (nextElement == above) {
 				drawPath(i, j - 1);
+			}
+		}
+	}
+	
+	private static void fillPathCluster() {
+		pathCluster = new String[sequenz1.length() + 1][sequenz2.length() + 1];
+		for (int i = 0; i <= sequenz1.length(); i++) {
+			for (int j = 0; j <= sequenz2.length(); j++) {
+				pathCluster[i][j] = Integer.toString(cluster[i][j]);
 			}
 		}
 	}
@@ -67,9 +77,8 @@ public class NadelWunsch {
 	public static void main(String[] args) {
 		initialisiere();
 		compare();
-		printTable(cluster);
+		fillPathCluster();
 		drawPath(sequenz1.length(), sequenz2.length());
-		System.out.println("_________________________");
-		printTable(cluster);
+		printTable(pathCluster);
 	}
 }
