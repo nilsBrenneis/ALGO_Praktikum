@@ -14,7 +14,7 @@ import nbcn.termin4.FibonacciHeap;
 import nbcn.termin4.Main;
 import nbcn.termin4.graph.Edge;
 import nbcn.termin4.graph.Graph;
-import nbcn.termin4.graph.Vertex;
+import nbcn.termin4.graph.Node;
 import nbcn.termin4.graph.VisualGraph;
 
 
@@ -26,13 +26,13 @@ public class PrimAlgorithm extends JPanel{
 
 	private Graph graph;
 	private ArrayList<Edge> primEdges;
-	private ArrayList<Vertex> primNodes;
+	private ArrayList<Node> primNodes;
 					
 	private int mouseWheelCounter;
 	
 	
 	
-	public  PrimAlgorithm(Graph graph, Vertex startNode){
+	public  PrimAlgorithm(Graph graph, Node startNode){
 		this.graph = graph;
 		this.primEdges = new ArrayList<>();
 		this.primNodes = new ArrayList<>();
@@ -45,24 +45,24 @@ public class PrimAlgorithm extends JPanel{
 	
 	
 	
-	private void prim(Graph graph, Vertex startNode){
+	private void prim(Graph graph, Node startNode){
 		FibonacciHeap fib = new FibonacciHeap();
-		for (Vertex n : graph.getNodes()){
+		for (Node n : graph.getNodes()){
 			n.setKey(Double.POSITIVE_INFINITY);
 			n.setParent(null);
 		}
 		startNode.setKey(0.0);
 		startNode.setParent(null);
 		
-		for (Vertex n : graph.getNodes()){
+		for (Node n : graph.getNodes()){
 			fib.insert(n);
 		}
 	
 		while (! fib.isEmpty()){
-			Vertex u = fib.extractMin();
-			for (Vertex v : u.getNeighbors()){
-				double vertexWeight = graph.getVertexWeight(u, v);
-				if (!primNodes.contains(v)   &&   (vertexWeight) < v.getKey()){
+			Node u = fib.extractMin();
+			for (Node v : u.getNeighbors()){
+				double edgeLength = graph.getEdgeLength(u, v);
+				if (!primNodes.contains(v)   &&   (edgeLength) < v.getKey()){
 					Edge temp = graph.getDirectedEdge(u, v);
 					for (Edge e : graph.getDirectedEdgesTo(v)){
 						primEdges.remove(e);
@@ -70,8 +70,8 @@ public class PrimAlgorithm extends JPanel{
 					primEdges.add(temp);
 					
 					
-					fib.decreaseKey(v, vertexWeight);
-					v.setKey(vertexWeight);
+					fib.decreaseKey(v, edgeLength);
+					v.setKey(edgeLength);
 				}
 			}
 			primNodes.add(u);
@@ -117,7 +117,7 @@ public class PrimAlgorithm extends JPanel{
 
 	
 	private void drawElements(Graphics2D g2d){
-		for (Edge e :graph.getVertices()){
+		for (Edge e :graph.getEdges()){
 			e.drawEdge(g2d, SCALE, " ");
 		}
 		
@@ -129,7 +129,7 @@ public class PrimAlgorithm extends JPanel{
 			e.drawEdge(g2d, SCALE, "");
 		}
 	
-		for (Vertex n : graph.getNodes()){
+		for (Node n : graph.getNodes()){
 			String val = String.format("%4.0f", n.getKey());
 			n.drawCustomNode(g2d, SCALE, val);
 		}

@@ -3,13 +3,12 @@ package nbcn.termin4;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-import nbcn.termin4.graph.Vertex;
+import nbcn.termin4.graph.Node;
 
 public final class FibonacciHeap {
 
-    private Vertex min;
+    private Node min;
     private int size;
-    private final String noVertices = "No vertices in heap.";
 
     
     public FibonacciHeap(){
@@ -19,22 +18,22 @@ public final class FibonacciHeap {
     
     
     
-    public void insert(Vertex vertex) {
-    	if (vertex == null){
+    public void insert(Node node) {
+    	if (node == null){
     		throw new UnsupportedOperationException("Can't insert null.");
     	}
     	
     	if (min == null){
-    		min = vertex;
+    		min = node;
     	} else {
-            Vertex minNext = min.getNext();
-            min.setNext(vertex.getNext());
+            Node minNext = min.getNext();
+            min.setNext(node.getNext());
             min.getNext().setPrev(min);
-            vertex.setNext(minNext);
-            vertex.getNext().setPrev(vertex);
+            node.setNext(minNext);
+            node.getNext().setPrev(node);
         
-            if (min.getKey() >= vertex.getKey()){
-            	min = vertex;
+            if (min.getKey() >= node.getKey()){
+            	min = node;
             }
         }
         
@@ -43,16 +42,16 @@ public final class FibonacciHeap {
 
 
 
-    public void delete(Vertex vertex) {
-	    decreaseKey(vertex, Double.NEGATIVE_INFINITY);
+    public void delete(Node node) {
+	    decreaseKey(node, Double.NEGATIVE_INFINITY);
 	    extractMin();
 	}
 
 
 
-	public Vertex getMin() {
+	public Node getMin() {
         if (isEmpty())
-            throw new NoSuchElementException(noVertices);
+            throw new NoSuchElementException("No nodes in heap.");
         return min;
     }
 
@@ -80,7 +79,7 @@ public final class FibonacciHeap {
     	} else {
     		 FibonacciHeap union = new FibonacciHeap();
     		
-             Vertex oneNext = one.min.getNext();
+             Node oneNext = one.min.getNext();
              one.min.setNext(two.min.getNext());
              one.min.getNext().setPrev(one.min);
              two.min.setNext(oneNext);
@@ -103,14 +102,14 @@ public final class FibonacciHeap {
 
 
     
-    public Vertex extractMin() {
+    public Node extractMin() {
         if (isEmpty()){
-            throw new NoSuchElementException(noVertices);
+            throw new NoSuchElementException("No nodes in heap.");
         }
         
         size--;
 
-        Vertex tempMin = min;
+        Node tempMin = min;
 
         if (min.getNext() == min) { 
             min = null;
@@ -122,7 +121,7 @@ public final class FibonacciHeap {
         }
 
         if (tempMin.getChild() != null) {
-            Vertex tempChild = tempMin.getChild();
+            Node tempChild = tempMin.getChild();
             do {
                 tempChild.setParent(null);
                 tempChild = tempChild.getNext();
@@ -136,7 +135,7 @@ public final class FibonacciHeap {
         } else if (min != null && tempMin.getChild() == null) {
         	
         } else {
-            Vertex oneNext = min.getNext();
+            Node oneNext = min.getNext();
             min.setNext(tempMin.getChild().getNext());
             min.getNext().setPrev(min);
             tempMin.getChild().setNext(oneNext);
@@ -151,16 +150,16 @@ public final class FibonacciHeap {
         	return tempMin;
         }
 
-        ArrayList<Vertex> tempList = new ArrayList<>();
-        ArrayList<Vertex> rootList = new ArrayList<>();
+        ArrayList<Node> tempList = new ArrayList<>();
+        ArrayList<Node> rootList = new ArrayList<>();
 
-        Vertex runner = min;
+        Node runner = min;
         do {
         	rootList.add(runner);
         	runner = runner.getNext();
         } while (runner != min);
         
-        for (Vertex curr: rootList) {
+        for (Node curr: rootList) {
             while (true) {
                 while (curr.getDegree() >= tempList.size())
                     tempList.add(null);
@@ -170,11 +169,11 @@ public final class FibonacciHeap {
                     break;
                 }
 
-                Vertex other = tempList.get(curr.getDegree());
+                Node other = tempList.get(curr.getDegree());
                 tempList.set(curr.getDegree(), null);
 
-                Vertex min = (other.getKey() < curr.getKey())? other : curr;
-                Vertex max = (other.getKey() < curr.getKey())? curr  : other;
+                Node min = (other.getKey() < curr.getKey())? other : curr;
+                Node max = (other.getKey() < curr.getKey())? curr  : other;
 
                 max.getNext().setPrev(max.getPrev());
                 max.getPrev().setNext(max.getNext());
@@ -187,7 +186,7 @@ public final class FibonacciHeap {
                 } else if (min.getChild() != null   &&   max == null){
                 	
                 } else {
-                    Vertex oneNext = min.getChild().getNext();
+                    Node oneNext = min.getChild().getNext();
 	                min.getChild().setNext(max.getNext());
 	                min.getChild().getNext().setPrev(min.getChild());
 	                max.setNext(oneNext);
@@ -214,64 +213,64 @@ public final class FibonacciHeap {
 
     
     
-    public void decreaseKey(Vertex vertex, double newKey) {
-    	if (newKey > vertex.getKey()){
+    public void decreaseKey(Node node, double newKey) {
+    	if (newKey > node.getKey()){
 	            throw new IllegalArgumentException("Key value isn't allowed to go UP");
 		}
 
-		vertex.setKey(newKey);
+		node.setKey(newKey);
 	    
-		if (vertex.getParent() != null   &&   (vertex.getKey() <= vertex.getParent().getKey()) )
-	        cutNode(vertex);
+		if (node.getParent() != null   &&   (node.getKey() <= node.getParent().getKey()) )
+	        cutNode(node);
 
-		if (vertex.getKey() <= min.getKey())
-	        min = vertex;
+		if (node.getKey() <= min.getKey())
+	        min = node;
 	}
 
 
     
-    private void cutNode(Vertex vertex) {
-        vertex.setMarked(false);
+    private void cutNode(Node node) {
+        node.setMarked(false);
 
-        if (vertex.getParent() == null){
+        if (node.getParent() == null){
         	return;
         }
 
-        if (vertex.getNext() != vertex) {
-        	vertex.getNext().setPrev(vertex.getPrev());
-            vertex.getPrev().setNext(vertex.getNext());
+        if (node.getNext() != node) {
+        	node.getNext().setPrev(node.getPrev());
+            node.getPrev().setNext(node.getNext());
         }
 
-        if (vertex.getParent().getChild() == vertex) {
-            if (vertex.getNext() != vertex) {
-                vertex.getParent().setChild(vertex.getNext());
+        if (node.getParent().getChild() == node) {
+            if (node.getNext() != node) {
+                node.getParent().setChild(node.getNext());
             } else {
-                vertex.getParent().setChild(null);
+                node.getParent().setChild(null);
             }
         }
 
-        vertex.getParent().decDegree();
+        node.getParent().decDegree();
 
-        vertex.setPrev(vertex);
-        vertex.setNext(vertex);
+        node.setPrev(node);
+        node.setNext(node);
         
    
-        Vertex minNext = min.getNext();
-        min.setNext(vertex.getNext());
+        Node minNext = min.getNext();
+        min.setNext(node.getNext());
         min.getNext().setPrev(min);
-        vertex.setNext(minNext);
-        vertex.getNext().setPrev(vertex);
+        node.setNext(minNext);
+        node.getNext().setPrev(node);
         
-        if (min.getKey() >= vertex.getKey()){
-        	min = vertex;
+        if (min.getKey() >= node.getKey()){
+        	min = node;
         }
 
-        if (vertex.getParent().isMarked()){
-            cutNode(vertex.getParent());
+        if (node.getParent().isMarked()){
+            cutNode(node.getParent());
         } else {
-        	vertex.getParent().setMarked(true);
+        	node.getParent().setMarked(true);
         }
 
-        vertex.setParent(null);
+        node.setParent(null);
     }
 }

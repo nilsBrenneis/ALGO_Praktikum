@@ -8,13 +8,13 @@ import java.util.NoSuchElementException;
 
 public class Graph{
 	
-	private ArrayList<Vertex> vertices;
+	private ArrayList<Node> nodes;
 	private ArrayList<Edge> edges;
 	
 	
 	
 	public Graph(){
-		vertices = new ArrayList<>();
+		nodes = new ArrayList<>();
 		edges = new ArrayList<>();
 	}
 		
@@ -24,7 +24,7 @@ public class Graph{
 	
 	
 	public boolean isEmpty(){
-		return vertices.size() == 0;
+		return nodes.size() == 0;
 	}
 	
 	
@@ -34,43 +34,43 @@ public class Graph{
 	/*****     NODE OPERATIONS     *****/
 	/***********************************/
 	
-	public ArrayList<Vertex> getNodes()		{		return vertices;					}
-	public int getNumberOfNodes()			{		return vertices.size();			}
-	public boolean containsNode(Vertex vertex)	{		return vertices.contains(vertex);	}
+	public ArrayList<Node> getNodes()		{		return nodes;					}
+	public int getNumberOfNodes()			{		return nodes.size();			}
+	public boolean containsNode(Node node)	{		return nodes.contains(node);	}
 
 	
-	public void addNode(Vertex vertex){
-		if ( ! vertices.contains(vertex)){
-			vertices.add(vertex);
+	public void addNode(Node node){
+		if ( ! nodes.contains(node)){
+			nodes.add(node);
 		}
 	}
 	
 	
-	public void removeNode(Vertex vertex){
+	public void removeNode(Node node){
 		ArrayList<Edge> toBeDeleted = new ArrayList<>();
 		for (Edge e : edges){
-			if (e.getA() == vertex    ||    e.getB() == vertex){
-				e.getA().dropNeighbor(vertex);
-				e.getB().dropNeighbor(vertex);
+			if (e.getA() == node    ||    e.getB() == node){
+				e.getA().dropNeighbor(node);
+				e.getB().dropNeighbor(node);
 				toBeDeleted.add(e);
 			}
 		}
 		edges.removeAll(toBeDeleted);
-		vertices.remove(vertex);
+		nodes.remove(node);
 	}
 	
 	
-	public ArrayList<Vertex> getNeighbors (Vertex vertex){
-		if (vertices.contains(vertex)){
-			ArrayList<Vertex> neighbors = new ArrayList<>();
+	public ArrayList<Node> getNeighbors (Node node){
+		if (nodes.contains(node)){
+			ArrayList<Node> neighbors = new ArrayList<>();
 			for (Edge e : edges){
-				if (e.getA() == vertex){
+				if (e.getA() == node){
 					neighbors.add(e.getA());
 				}
 			}
 			return neighbors;
 		} else {
-			throw new NoSuchElementException("Vertex isn't part of this graph");
+			throw new NoSuchElementException("Node isn't part of this graph");
 		}
 	}
 
@@ -85,41 +85,41 @@ public class Graph{
 	/***********************************/
 
 	
-	public ArrayList<Edge> getVertices()			{		return edges;						}
+	public ArrayList<Edge> getEdges()			{		return edges;						}
 	public int getNumberOfEdges()				{		return edges.size();				}
 	public boolean containsEdge(Edge edge)		{		return edges.contains(edge);		}
-	public boolean containsEdge(Vertex a, Vertex b)	{		return getVertexWeight(a,b) != null;	}
+	public boolean containsEdge(Node a, Node b)	{		return getEdgeLength(a,b) != null;	}
 	
 	
 	
 	
 	public void addEdge(Edge edge){
-		if (vertices.contains(edge.getA())   &&   vertices.contains(edge.getB())){
+		if (nodes.contains(edge.getA())   &&   nodes.contains(edge.getB())){
 			edges.add(edge);
 		} else {
-			throw new NoSuchElementException("At least one vertex missing");
+			throw new NoSuchElementException("At least one node missing");
 		}
 	}
 	
 	
-	public void addEdge(Vertex a, Vertex b){
-		if (vertices.contains(a)   &&   vertices.contains(b)){
+	public void addEdge(Node a, Node b){
+		if (nodes.contains(a)   &&   nodes.contains(b)){
 			addDirectedEdge(a, b);
 			addDirectedEdge(b, a);
 		} else {
-			throw new NoSuchElementException("At least one vertex missing");
+			throw new NoSuchElementException("At least one node missing");
 		}
 	}
 	
 	
 	
-	public void addDirectedEdge(Vertex a, Vertex b){
-		if (vertices.contains(a)   &&   vertices.contains(b)){
-			double weight = calcEdgeWeight(a, b);
-			edges.add(new Edge(a, b, weight));
+	public void addDirectedEdge(Node a, Node b){
+		if (nodes.contains(a)   &&   nodes.contains(b)){
+			double length = calcEdgeLength(a, b);
+			edges.add(new Edge(a, b, length));
 			a.addNeighbor(b);
 		} else {
-			throw new NoSuchElementException("At least one vertex missing");
+			throw new NoSuchElementException("At least one node missing");
 		}
 	}
 	
@@ -134,8 +134,8 @@ public class Graph{
 	}
 		
 	
-	public void removeEdge (Vertex a, Vertex b){
-		if (vertices.contains(a)   &&   vertices.contains(b)){
+	public void removeEdge (Node a, Node b){
+		if (nodes.contains(a)   &&   nodes.contains(b)){
 			ArrayList<Edge> toBeRemoved = new ArrayList<>();
 			for (Edge e : edges){
 				if ( ((e.getA() == a)   &&   (e.getB() == b))   ||   ((e.getA() == b)   &&   (e.getB() == a)) ){
@@ -146,70 +146,70 @@ public class Graph{
 			}
 			edges.removeAll(toBeRemoved);
 		} else {
-			throw new NoSuchElementException("At least one vertex missing");
+			throw new NoSuchElementException("At least one node missing");
 		}
 	}
 
 	
 	
 	
-	public void setEdgeHighlighted (Vertex a, Vertex b, boolean bool){
-		if (vertices.contains(a)   &&   vertices.contains(b)){
+	public void setEdgeHighlighted (Node a, Node b, boolean bool){
+		if (nodes.contains(a)   &&   nodes.contains(b)){
 			for (Edge e : edges){
 				if ( ((e.getA() == a)   &&   (e.getB() == b))   ||   ((e.getA() == b)   &&   (e.getB() == a)) ){
 					e.setHighlighted(bool);
 				}
 			}
 		} else {
-			throw new NoSuchElementException("At least one vertex missing");
+			throw new NoSuchElementException("At least one node missing");
 
 		}
 	}
 
 	
-	public boolean isEdgeHighlighted (Vertex a, Vertex b){
-		if (vertices.contains(a)   &&   vertices.contains(b)){
+	public boolean isEdgeHighlighted (Node a, Node b){
+		if (nodes.contains(a)   &&   nodes.contains(b)){
 			for (Edge e : edges){
 				if ( ((e.getA() == a)   &&   (e.getB() == b))   ||   ((e.getA() == b)   &&   (e.getB() == a)) ){
 					return e.isHighlighted();
 				}
 			}
-			throw new NoSuchElementException("No known Edge between given vertices");
+			throw new NoSuchElementException("No known Edge between given nodes");
 		} else {
-			throw new NoSuchElementException("At least one vertex missing");
+			throw new NoSuchElementException("At least one node missing");
 		}
 	}
 	
 	
 	
 	
-	public Double getVertexWeight(Vertex a, Vertex b){
-		if (vertices.contains(a)   &&   vertices.contains(b)){
+	public Double getEdgeLength(Node a, Node b){
+		if (nodes.contains(a)   &&   nodes.contains(b)){
 			for (Edge e : edges){
 				if ( ((e.getA() == a)   &&   (e.getB() == b))   ||   ((e.getA() == b)   &&   (e.getB() == a)) ){
-					return e.getWeight();
+					return e.getLength();
 				}
 			}
 			return null;
 		} else {
-			throw new NoSuchElementException("At least one vertex missing");
+			throw new NoSuchElementException("At least one node missing");
 		}
 	}
 	
 	
-	public Double getNodeDistance(Vertex a, Vertex b){
-		if (vertices.contains(a)   &&   vertices.contains(b)){
-			return calcEdgeWeight(a, b);
+	public Double getNodeDistance(Node a, Node b){
+		if (nodes.contains(a)   &&   nodes.contains(b)){
+			return calcEdgeLength(a, b);
 		} else {
-			throw new NoSuchElementException("At least one vertex missing");
+			throw new NoSuchElementException("At least one node missing");
 		}
 	}
 	
 	
 	
 	
-	public Edge getDirectedEdge(Vertex a, Vertex b){
-		if (vertices.contains(a)   &&   vertices.contains(b)){
+	public Edge getDirectedEdge(Node a, Node b){
+		if (nodes.contains(a)   &&   nodes.contains(b)){
 			for (Edge e : edges){
 				if ( ((e.getA() == a)   &&   (e.getB() == b)) ) {
 					return e;
@@ -220,9 +220,9 @@ public class Graph{
 	}
 	
 	
-	public ArrayList<Edge> getDirectedEdgesTo (Vertex a){
+	public ArrayList<Edge> getDirectedEdgesTo (Node a){
 		ArrayList<Edge> result = new ArrayList<>();
-		if (vertices.contains(a)){
+		if (nodes.contains(a)){
 			for (Edge e : edges){
 				if (e.getB() == a){
 					result.add(e);
@@ -235,7 +235,7 @@ public class Graph{
 	
 	
 	
-	private double calcEdgeWeight(Vertex a, Vertex b){
+	private double calcEdgeLength(Node a, Node b){
 		int colDiff = Math.abs(a.getColVal() - b.getColVal());
 		int rowDiff = Math.abs(a.getRowVal() - b.getRowVal());
 		return (Math.sqrt((colDiff*colDiff) + (rowDiff*rowDiff))) / VisualGraph.PIXEL_PER_STEP;
@@ -244,8 +244,8 @@ public class Graph{
 	
 	
 	
-	public void drawEdge(Graphics2D g2d, double scale, Vertex a, Vertex b, String text){
-		if (vertices.contains(a)   &&   vertices.contains(b)){
+	public void drawEdge(Graphics2D g2d, double scale, Node a, Node b, String text){
+		if (nodes.contains(a)   &&   nodes.contains(b)){
 			Edge e1 = null;
 			Edge e2 = null;
 			for (Edge e : edges){
@@ -260,10 +260,10 @@ public class Graph{
 				e1.drawEdge(g2d, scale, text);
 				e2.drawEdge(g2d, scale, "");
 			} else {
-				throw new NoSuchElementException("No known edge between given vertices");
+				throw new NoSuchElementException("No known edge between given nodes");
 			}
 		} else {
-			throw new NoSuchElementException("At least one vertex missing");
+			throw new NoSuchElementException("At least one node missing");
 		}
 	}
 		

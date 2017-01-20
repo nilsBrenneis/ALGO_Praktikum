@@ -4,42 +4,51 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import nbcn.termin4.Main;
 import nbcn.termin4.graph.Edge;
 import nbcn.termin4.graph.Graph;
-import nbcn.termin4.graph.Vertex;
+import nbcn.termin4.graph.Node;
 import nbcn.termin4.graph.VisualGraph;
 
 public class BellmanFord extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private static final double SCALE = VisualGraph.SUBWINDOW_SCALE;
+	
+	private ArrayList<Edge> finalEdges;
 
 	private Graph graph;
 
 
 	
-	public  BellmanFord(Graph graph, Vertex startNode){
+	public  BellmanFord(Graph graph, Node startNode){
 		this.graph = graph;
+		finalEdges  = new ArrayList<>();
 		bellmanFord(graph, startNode);
+		for (Node n : graph.getNodes()){
+			if (n.getParent() != null){
+				finalEdges.add(new Edge(n, n.getParent(), graph.getEdgeLength(n, n.getParent())));
+			}
+		}
 	}	
 
 	
 	
 	
-	private boolean bellmanFord(Graph graph, Vertex startNode){
+	private boolean bellmanFord(Graph graph, Node startNode){
 		initializeSingleSource(graph, startNode);
 		for (int i = 1   ;   i < graph.getNodes().size()   ;   i++){
-			for (Edge e : graph.getVertices()){
+			for (Edge e : graph.getEdges()){
 				relax(e.getA(), e.getB());
 			}
 		}
 
-		for (Edge e : graph.getVertices()){
-			if (e.getA().getKey() > ( e.getB().getKey() + graph.getVertexWeight(e.getA(), e.getB()))){
+		for (Edge e : graph.getEdges()){
+			if (e.getA().getKey() > ( e.getB().getKey() + graph.getEdgeLength(e.getA(), e.getB()))){
 				return false;
 			}		
 		}
@@ -48,8 +57,8 @@ public class BellmanFord extends JPanel{
 	
 	
 	
-	private void initializeSingleSource(Graph graph, Vertex startNode){
-		for (Vertex n : graph.getNodes()){
+	private void initializeSingleSource(Graph graph, Node startNode){
+		for (Node n : graph.getNodes()){
 			n.setKey(Double.POSITIVE_INFINITY);
 			n.setParent(null);
 		}
@@ -58,10 +67,10 @@ public class BellmanFord extends JPanel{
 	
 	
 	
-	private void relax(Vertex u, Vertex v){
-		if (v.getKey() > (u.getKey() + graph.getVertexWeight(u, v))){
-			v.setKey(u.getKey() + graph.getVertexWeight(u, v));
-			v.setParent(null);
+	private void relax(Node u, Node v){
+		if (v.getKey() > (u.getKey() + graph.getEdgeLength(u, v))){
+			v.setKey(u.getKey() + graph.getEdgeLength(u, v));
+			v.setParent(u);
 		}
 	}
 	
@@ -103,18 +112,22 @@ public class BellmanFord extends JPanel{
 
 	
 	private void drawElements(Graphics2D g2d){
-		for (Edge e : graph.getVertices()){
+		for (Edge e :graph.getEdges()){
+			e.drawEdge(g2d, SCALE, " ");
+		}
+		
+		g2d.setColor(new Color(255,255,255,160));
+		g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
+		for (Edge e : finalEdges){
 			e.drawEdge(g2d, SCALE, " ");
 		}
 	
-		for (Vertex n : graph.getNodes()){
+		for (Node n : graph.getNodes()){
 			String key = String.format("%4.0f", n.getKey());
 			n.drawCustomNode(g2d, SCALE, key);;
 		}
 	}		
 	
 	
-	
-	
-
 }

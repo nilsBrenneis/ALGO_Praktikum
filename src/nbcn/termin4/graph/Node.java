@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 
-public class Vertex {
+public class Node {
 		private char col;
 		private int row;
 		private int colVal;
@@ -17,17 +17,17 @@ public class Vertex {
 		
 		private int degree;
 		private boolean marked;
-		private Vertex next;
-		private Vertex prev;
-		private Vertex parent;
-		private Vertex child;
+		private Node next;
+		private Node prev;
+		private Node parent;
+		private Node child;
 		private double key;
 		
-		private ArrayList<Vertex> neighbors;
+		private ArrayList<Node> neighbors;
 
 		
 	
-		public Vertex(char col, int row, double key){
+		public Node (char col, int row, double key){
 			this.col = col;
 			this.row = row;
 			this.colVal = ((this.col - 'A' +1) * VisualGraph.COORD_STEPSIZE) + VisualGraph.SIDE_OFFSET;
@@ -48,34 +48,34 @@ public class Vertex {
 
 		
 		
-		public ArrayList<Vertex> getNeighbors(){
+		public ArrayList<Node> getNeighbors(){
 			return this.neighbors;		
 		}
 		
-		public void addNeighbor(Vertex vertex){
-			if (! this.neighbors.contains(vertex)){
-				this.neighbors.add(vertex);
+		public void addNeighbor(Node node){
+			if (! this.neighbors.contains(node)){
+				this.neighbors.add(node);	
 			}	
 		}
 		
-		public void dropNeighbor (Vertex vertex){
-			if (this.neighbors.contains(vertex)){
-				this.neighbors.remove(vertex);
+		public void dropNeighbor (Node node){
+			if (this.neighbors.contains(node)){
+				this.neighbors.remove(node);	
 			}
 		}
 		
 			
 		
 		
-		public Vertex getNext()				{ 	return this.next;		}
-		public Vertex getPrev()				{	return this.prev;		}
-		public Vertex getChild()				{	return this.child;		}
-		public Vertex getParent()				{	return this.parent;		}
+		public Node getNext()				{ 	return this.next;		}
+		public Node getPrev()				{	return this.prev;		}
+		public Node getChild()				{	return this.child;		}
+		public Node getParent()				{	return this.parent;		}
 		
-		public void setNext(Vertex vertex)		{	this.next = vertex;		}
-		public void setPrev(Vertex vertex)		{	this.prev = vertex;		}
-		public void setChild(Vertex vertex)		{	this.child = vertex;		}
-		public void setParent(Vertex vertex)	{	this.parent = vertex;		}
+		public void setNext(Node node)		{	this.next = node;		}
+		public void setPrev(Node node)		{	this.prev = node;		}
+		public void setChild(Node node)		{	this.child = node;		}
+		public void setParent(Node node)	{	this.parent = node;		}
 		
 		
 		public int getDegree()				{	return this.degree;		}

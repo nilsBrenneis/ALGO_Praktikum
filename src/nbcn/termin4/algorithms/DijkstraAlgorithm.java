@@ -14,7 +14,7 @@ import nbcn.termin4.FibonacciHeap;
 import nbcn.termin4.Main;
 import nbcn.termin4.graph.Edge;
 import nbcn.termin4.graph.Graph;
-import nbcn.termin4.graph.Vertex;
+import nbcn.termin4.graph.Node;
 import nbcn.termin4.graph.VisualGraph;
 
 public class DijkstraAlgorithm  extends JPanel{
@@ -28,7 +28,7 @@ public class DijkstraAlgorithm  extends JPanel{
 	
 	
 	
-	public  DijkstraAlgorithm(Graph graph, Vertex startNode){
+	public  DijkstraAlgorithm(Graph graph, Node startNode){
 		this.graph = graph;
 		this.dijkstraEdges = new ArrayList<>();
 		this.mouseWheelCounter = 0;
@@ -40,9 +40,9 @@ public class DijkstraAlgorithm  extends JPanel{
 	
 	
 	
-	private void dijkstra(Graph graph, Vertex startNode){
+	private void dijkstra(Graph graph, Node startNode){
 		FibonacciHeap fib = new FibonacciHeap();
-		for (Vertex v : graph.getNodes()){
+		for (Node v : graph.getNodes()){
 			v.setKey(Double.POSITIVE_INFINITY);
 			v.setParent(null);
 		}
@@ -50,14 +50,14 @@ public class DijkstraAlgorithm  extends JPanel{
 		startNode.setKey(0.0);
 		startNode.setParent(null);
 		
-		for (Vertex v : graph.getNodes()){
+		for (Node v : graph.getNodes()){
 			fib.insert(v);
 		}
 		
 		while (! fib.isEmpty()){
-			Vertex u = fib.extractMin();
-			for (Vertex v : u.getNeighbors()){
-				Double distanceFromStart = u.getKey() + graph.getVertexWeight(u, v);
+			Node u = fib.extractMin();
+			for (Node v : u.getNeighbors()){
+				Double distanceFromStart = u.getKey() + graph.getEdgeLength(u, v);
 				if (v.getKey() > (distanceFromStart)){
 					Edge temp = graph.getDirectedEdge(u, v);
 					for (Edge e : graph.getDirectedEdgesTo(v)){
@@ -110,7 +110,7 @@ public class DijkstraAlgorithm  extends JPanel{
 
 	
 	private void drawElements(Graphics2D g2d){
-		for (Edge e :graph.getVertices()){
+		for (Edge e :graph.getEdges()){
 			e.drawEdge(g2d, SCALE, " ");
 		}
 		
@@ -122,7 +122,7 @@ public class DijkstraAlgorithm  extends JPanel{
 			e.drawEdge(g2d, SCALE, "");
 		}
 	
-		for (Vertex n : graph.getNodes()){
+		for (Node n : graph.getNodes()){
 			String val = String.format("%4.0f", n.getKey());
 			n.drawCustomNode(g2d, SCALE, val);
 		}

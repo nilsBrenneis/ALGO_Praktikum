@@ -12,7 +12,7 @@ import nbcn.termin4.FibonacciHeap;
 import nbcn.termin4.Main;
 import nbcn.termin4.graph.Edge;
 import nbcn.termin4.graph.Graph;
-import nbcn.termin4.graph.Vertex;
+import nbcn.termin4.graph.Node;
 import nbcn.termin4.graph.VisualGraph;
 
 public class AStarAlgorithm extends JPanel{
@@ -22,13 +22,13 @@ public class AStarAlgorithm extends JPanel{
 
 
 	private Graph graph;
-	private ArrayList<Vertex> log;
+	private ArrayList<Node> log;
 	private ArrayList<Edge> routeEdges;
-	private ArrayList<Vertex> routeNodes;
+	private ArrayList<Node> routeNodes;
 
 	
 	
-	public  AStarAlgorithm(Graph graph, Vertex startNode, Vertex endNode){
+	public  AStarAlgorithm(Graph graph, Node startNode, Node endNode){
 		this.graph = graph;
 		this.log = new ArrayList<>();
 		this.routeEdges = new ArrayList<>();
@@ -41,11 +41,11 @@ public class AStarAlgorithm extends JPanel{
 
 	
 	
-	private boolean aStar(Graph graph, Vertex startNode, Vertex endNode){
+	private boolean aStar(Graph graph, Node startNode, Node endNode){
 		FibonacciHeap openList = new FibonacciHeap();
-		ArrayList<Vertex>closedList = new ArrayList<>();
+		ArrayList<Node>closedList = new ArrayList<>();
 		
-		for (Vertex n : graph.getNodes()){
+		for (Node n : graph.getNodes()){
 			n.setKey(Double.POSITIVE_INFINITY);
 		}
 		
@@ -54,55 +54,61 @@ public class AStarAlgorithm extends JPanel{
 		log.add(startNode);
 		
 		while ( ! openList.isEmpty() ){
-			Vertex u = openList.extractMin();
+			Node u = openList.extractMin();
 			log.remove(u);
 			
 			if (u == endNode){
 				return true;
 			}
 			closedList.add(u);
-			expandNode (graph, closedList, openList, u, startNode);
+			expandNode (graph, closedList, openList, u, endNode);
 		}
 		return false;
 	}
 	
-	private void expandNode(Graph graph, ArrayList<Vertex> closedList, FibonacciHeap openList, Vertex u, Vertex startNode){
-		for (Vertex v : u.getNeighbors()){
+	private void expandNode(Graph graph, ArrayList<Node> closedList, FibonacciHeap openList, Node u, Node endNode){
+		for (Node v : u.getNeighbors()){
 			if (closedList.contains(v) ){
 				continue;
 			}
-			double g = u.getKey() + graph.getVertexWeight(u, v);
+			
+			double g = u.getKey() + graph.getEdgeLength(u, v);
+			
 			if (log.contains(v)   &&   g >= v.getKey()){
 				continue;
 			}
-			v.setParent(null);
-			double f = g + graph.getNodeDistance(startNode, u);
-			v.setKey(f);
-			if ( ! log.contains(v) ){
+
+			double f = g + graph.getNodeDistance(u, endNode);
+			
+			if (log.contains(v) ){
+				v.setKey(f);
+				openList.decreaseKey(v, f);
+			}else {
+				v.setKey(f);
 				openList.insert(v);
 				log.add(v);
 			}
 		}
 	}
 	
-	private void constructRoute (Vertex startNode, Vertex endNode){
-		Vertex temp = endNode;
+	private void constructRoute (Node startNode, Node endNode){
+		Node temp = endNode;
 		while (temp != startNode   &&   temp.getNeighbors() != null   &&   !routeNodes.contains(temp)){
-			Vertex minNode = temp.getNeighbors().get(0);
-			for (Vertex n : temp.getNeighbors()){
+			Node minNode = temp.getNeighbors().get(0);
+			for (Node n : temp.getNeighbors()){
 				if (n.getKey() < minNode.getKey()){
 					minNode = n;
 				}
 			}
 			minNode.setHighlighted(true);
-			double weight = graph.getVertexWeight(temp, minNode);
-			routeEdges.add(new Edge(temp, minNode, weight));
+			double length = graph.getEdgeLength(temp, minNode);
+			routeEdges.add(new Edge(temp, minNode, length));
 			routeNodes.add(temp);
 			temp = minNode;
 		}
 		for (int i = routeEdges.size() -2   ;   i >= 0   ;   i--){
-			double weight = routeEdges.get(i).getWeight();
-			routeEdges.get(i).setWeight(weight + routeEdges.get(i+1).getWeight());
+			double length = routeEdges.get(i).getLength();
+			routeEdges.get(i).setLength(length + routeEdges.get(i+1).getLength());
 		}
 		repaint();
 	}
@@ -144,7 +150,7 @@ public class AStarAlgorithm extends JPanel{
 
 	
 	private void drawElements(Graphics2D g2d){
-		for (Edge e : graph.getVertices()){
+		for (Edge e : graph.getEdges()){
 			e.drawEdge(g2d, SCALE, " ");
 		}
 		
@@ -153,9 +159,9 @@ public class AStarAlgorithm extends JPanel{
 			e.drawEdge(g2d, SCALE, "");
 		}
 		
-		for (Vertex n : graph.getNodes()){
+		for (Node n : graph.getNodes()){
 			String key = String.format("%4.0f", n.getKey());
-			n.drawCustomNode(g2d, SCALE, key);;
+			n.drawCustomNode(g2d, SCALE, key);
 		}
 	}
 	

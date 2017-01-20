@@ -44,8 +44,8 @@ public class VisualGraph extends JPanel{
 	
 	private Color baselayer;
 
-	private ArrayList<Vertex> selectedNodes;
-	private ArrayList<String> vertexBuffer;
+	private ArrayList<Node> selectedNodes;
+	private ArrayList<String> nodeBuffer;
 	private ArrayList<String> edgeBuffer;
 	
 	private Graph graph;
@@ -57,7 +57,7 @@ public class VisualGraph extends JPanel{
 	public VisualGraph(){
 		baselayer = CLEAR;
 		selectedNodes = new ArrayList<>();
-		vertexBuffer = new ArrayList<>();
+		nodeBuffer = new ArrayList<>();
 		edgeBuffer = new ArrayList<>();
 				
 		graph= new Graph();
@@ -86,9 +86,9 @@ public class VisualGraph extends JPanel{
 		String line = "";
 		
 		try {
-			br = new BufferedReader(new FileReader(new File(getClass().getResource("vertices.csv").getFile())));
+			br = new BufferedReader(new FileReader(new File(getClass().getResource("nodes.csv").getFile())));
 			while ((line = br.readLine()) != null){
-				vertexBuffer.add(line);
+				nodeBuffer.add(line);
 			}
 		} catch (FileNotFoundException e1){			
 		} catch (IOException e2) {
@@ -108,11 +108,11 @@ public class VisualGraph extends JPanel{
 	private void readDataFromBuffers(){
 		String splitBy = ", ";
 		
-		for (String line : vertexBuffer){
-			String[] vertex = line.split(splitBy);
-			char col = vertex[0].charAt(0);
-			int row = ((int) vertex[0].charAt(1)) - '0';
-			graph.addNode(new Vertex(col, row, 0));
+		for (String line : nodeBuffer){
+			String[] node = line.split(splitBy);
+			char col = node[0].charAt(0);
+			int row = ((int) node[0].charAt(1)) - '0';
+			graph.addNode(new Node(col, row, 0));
 		}
 		
 		for (String line : edgeBuffer){
@@ -121,17 +121,17 @@ public class VisualGraph extends JPanel{
 			int rowA = ((int) edge[0].charAt(1)) - '0';
 			char colB = edge[1].charAt(0);
 			int rowB = ((int) edge[1].charAt(1)) - '0';
-			Vertex vertexA = null;
-			Vertex vertexB = null;
-			for (Vertex n : graph.getNodes()){
+			Node nodeA = null;
+			Node nodeB = null;
+			for (Node n : graph.getNodes()){
 				if (n.getCol() == colA   &&   n.getRow() == rowA){
-					vertexA = n;
+					nodeA = n;
 				}
 				if (n.getCol() == colB   &&   n.getRow() == rowB){
-					vertexB = n;
+					nodeB = n;
 				}
 			}
-			graph.addEdge(vertexA, vertexB);
+			graph.addEdge(nodeA, nodeB);
 		}
 	}
 	
@@ -144,11 +144,11 @@ public class VisualGraph extends JPanel{
 		Graphics2D g2d = (Graphics2D) g;
 		drawCoordinateSystem(g2d);
 	
-		for (Edge e : graph.getVertices()){
+		for (Edge e : graph.getEdges()){
 			e.drawEdge(g2d, SCALE, null);
 		}
 		
-		for (Vertex n : graph.getNodes()){
+		for (Node n : graph.getNodes()){
 			n.drawNode(g2d);
 		}
 		g2d.setColor(baselayer);
@@ -214,7 +214,7 @@ public class VisualGraph extends JPanel{
 			boolean hit = false;
 			int xPos = e.getX();
 			int yPos = e.getY();
-			for (Vertex n : graph.getNodes()){
+			for (Node n : graph.getNodes()){
 				int[] colRange = {n.getColVal() - NODE_RADIUS, n.getColVal() + NODE_RADIUS};
 				int[] rowRange = {n.getRowVal() - NODE_RADIUS, n.getRowVal() + NODE_RADIUS};
 				
@@ -242,15 +242,15 @@ public class VisualGraph extends JPanel{
 			y = (e.getY() % COORD_STEPSIZE > (COORD_STEPSIZE / 2)) ? (y+1) : (y);
 			char col = (char) (x + 'A' -1);
 			int row = y;
-			Vertex run = null;
-			for (Vertex n : graph.getNodes()){
+			Node run = null;
+			for (Node n : graph.getNodes()){
 				if (n.getCol() == col   &&   n.getRow() == row){
 					run = n;
 				}
 			}
 		
 			if (run == null   &&   selectedNodes.isEmpty()){
-				graph.addNode(new Vertex((char)(x+'A'-1),y, 0));
+				graph.addNode(new Node((char)(x+'A'-1),y, 0));
 			}
 			
 			if (run == null   && selectedNodes.size() == 1){
@@ -264,7 +264,7 @@ public class VisualGraph extends JPanel{
 
 		private boolean findNodeForDeletion(MouseEvent e) {
 			boolean found = false;
-			for (Vertex n : graph.getNodes()){
+			for (Node n : graph.getNodes()){
 				int[] colRange = {n.getColVal() - NODE_RADIUS, n.getColVal() + NODE_RADIUS};
 				int[] rowRange = {n.getRowVal() - NODE_RADIUS, n.getRowVal() + NODE_RADIUS};
 				
@@ -304,18 +304,18 @@ public class VisualGraph extends JPanel{
 
 		
 		private void backUpCurrentGraph(){
-			vertexBuffer = new ArrayList<>();
+			nodeBuffer = new ArrayList<>();
 			edgeBuffer = new ArrayList<>();
-			for (Vertex vertex : graph.getNodes()){
-				int tempCol = (vertex.getColVal() - SIDE_OFFSET) / PIXEL_PER_STEP;
-				int tempRow = (vertex.getRowVal() - SIDE_OFFSET) / PIXEL_PER_STEP;
-				String line = "" + vertex.getCol() + vertex.getRow() + ", " + tempCol + ", " + tempRow;
-				vertexBuffer.add(line);
+			for (Node node : graph.getNodes()){
+				int tempCol = (node.getColVal() - SIDE_OFFSET) / PIXEL_PER_STEP;
+				int tempRow = (node.getRowVal() - SIDE_OFFSET) / PIXEL_PER_STEP;
+				String line = "" + node.getCol() + node.getRow() + ", " + tempCol + ", " + tempRow;
+				nodeBuffer.add(line);
 			}
 			
-			for (Edge edge : graph.getVertices()){
-				Vertex a = edge.getA();
-				Vertex b = edge.getB();
+			for (Edge edge : graph.getEdges()){
+				Node a = edge.getA();
+				Node b = edge.getB();
 				String line = "" + a.getCol() + a.getRow() + ", " + b.getCol() + b.getRow();
 				edgeBuffer.add(line);
 			}
@@ -383,7 +383,7 @@ public class VisualGraph extends JPanel{
 			}
 			
 			if (e.getKeyCode() == KeyEvent.VK_R){
-				vertexBuffer = new ArrayList<>();
+				nodeBuffer = new ArrayList<>();
 				edgeBuffer = new ArrayList<>();
 				readDataFromFile();
 				resetBaseframe();
@@ -396,14 +396,14 @@ public class VisualGraph extends JPanel{
 
 		
 		private void deleteSelectedNodes() {
-			ArrayList<Vertex> toBeRemoved = new ArrayList<>();
-			for (Vertex n : graph.getNodes()){
+			ArrayList<Node> toBeRemoved = new ArrayList<>();
+			for (Node n : graph.getNodes()){
 				n.setHighlighted(false);
 				if (n.isMarkedForDeletion()){
 					toBeRemoved.add(n);
 				}
 			}
-			for (Vertex n : toBeRemoved){
+			for (Node n : toBeRemoved){
 				graph.removeNode(n);
 			}
 			selectedNodes = new ArrayList<>();
@@ -413,7 +413,7 @@ public class VisualGraph extends JPanel{
 
 		private void addOrRemoveEdge() {
 			if (selectedNodes.size() == 2){
-				if (graph.getVertexWeight(selectedNodes.get(0), selectedNodes.get(1)) != null){
+				if (graph.getEdgeLength(selectedNodes.get(0), selectedNodes.get(1)) != null){
 					graph.removeEdge(selectedNodes.get(0), selectedNodes.get(1));
 				} else {
 					graph.addEdge(selectedNodes.get(0), selectedNodes.get(1));
